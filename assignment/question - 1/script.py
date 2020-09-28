@@ -91,7 +91,7 @@ class QueryString:
         else:
             return self.query_string_conversion()
 
-print("# ------ Test Cases for valid Result ------------#")
+print("# ------ Test Cases for valid Result --------------#")
 String = "((A=2 || B=3) || (C=4 && D=5))"
 print("Valid-->  ((A=2 || B=3) || (C=4 && D=5))")
 print("# ------ Test Cases for Invalid Result ------------#")
@@ -100,5 +100,6 @@ print("Invalid --> ((A=2 && B=3)) || (C=4 && D=5))")
 #String = "((A=2 && B=3 || C=4 && D=5))"
 obj     = QueryString(String)
 output  = obj.process()
-print("# ------ Result ------------#")
-print(output)
+print("# -----------------------------------------------#")
+print("Input : ",String)
+print("Output  : ",output)
