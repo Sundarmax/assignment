@@ -18,7 +18,6 @@ def print_msg(msg):
 #print(a)
 #a()
 # By default read only permission given to non local variables. 
-
 num = 90
 
 def outside_fun():
@@ -35,4 +34,5 @@ def outside_fun():
     inner_fun()
     inner_fun2()
     print(b)
-outside_fun()
+
+#outside_fun()
