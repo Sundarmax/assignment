@@ -36,3 +36,16 @@ def outside_fun():
     print(b)
 
 #outside_fun()
+
+def sort_priority(values,groups):
+    def helper(x):
+        print(x)
+        if x in groups:
+            return(0,x)
+        return (1,x)
+    values.sort(key=helper)
+
+numbers = [8, 3, 1, 2, 5, 4, 7, 6]
+group   = {2, 3, 5, 7}
+sort_priority(numbers, group)
+print(numbers)
