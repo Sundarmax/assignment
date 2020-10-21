@@ -1,24 +1,25 @@
 import http.client
+import requests
 import json
 
 class ZoomAPIClient:
 
     def __init__(self):
-        self.conn = http.client.HTTPSConnection("api.zoom.us")
+        self.conn   = http.client.HTTPSConnection("api.zoom.us")
+        self.token  = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6IlRSQWNZQVN0U0dpdGRZX2ZJUGpJdHciLCJleHAiOjE2MDMxMDY1ODksImlhdCI6MTYwMjUwMTc4OX0.yrRPRNLiieAKsbIwoZ6AbFmKQUTvwIigFT8vys5Pj1s"
         self.headers = {
-            'authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6IlFqZTMxZnFNUm5pMlJ2WVBlbW9jVHciL"
-                        + "CJleHAiOjE2MDI3NTgyNTMsImlhdCI6MTYwMjE1MzQ1M30.OG2ZyAD-ekhblbm_OQhoRUnOnziQXN7Esy4aiHopmCA",
+            'authorization': "Bearer "+ self.token,
             'content-type': "application/json"
             }
 
     def get_user_list(self):
-        self.conn.request("GET", "/v2/users?status=active&page_size=30&page_number=1", headers=self.headers)
+        self.conn.request("GET", "/v2/users?status=active&page_size=30", headers=self.headers)
         res = self.conn.getresponse()
         data = res.read()
         print(data.decode("utf-8"))
     
     def create_new_meeting(self):
-        request_url  = "/v2/users/"+"sundar.info22@gmail.com"+"/meetings"
+        request_url  = "/v2/users/"+"sundar.rajan@clinilead.com"+"/meetings"
         input_dict = {"type":"1"}
         json_input = json.dumps(input_dict) 
         self.conn.request("POST",request_url,json_input,headers=self.headers)
@@ -35,10 +36,10 @@ class ZoomAPIClient:
         print(data.decode("utf-8"))
 
     def add_new_participant(self):
-        metting_id  = "71739438599"
+        metting_id  = "99264396904"
         request_url = "/v2/meetings/" + metting_id +"/registrants"
         input_dict = {
-                "email": "sundarmax15@gmail.com",
+                "email": "sundar.info22@gmail.com",
                 "first_name": "Sundar",
                 "last_name": "Rajan",
                 "address": "123 Main ST",
@@ -67,8 +68,35 @@ class ZoomAPIClient:
         data = res.read()
         print(data.decode("utf-8"))
 
+    def test_with_request_lib(self):
+        target_url = "https://api.zoom.us/v2/users/"
+        #security_key = "TOK" +':'+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6IlRSQWNZQVN0U0dpdGRZX2ZJUGpJdHciLCJleHAiOjE2MDI0OTMzMDgsImlhdCI6MTYwMjQ4NzkwOH0.0iAglbTwQJ03TbdVM7Dj__fxXn69n58uSClEmioSMjE"
+        result = requests.get(target_url,headers=self.headers)
+        print(result.text)
+
+    def update_registrant_status(self):
+        request_url  = "/v2/meetings/99264396904/registrants/status"
+        input_dict = {
+                "action": "deny",
+                "registrants": [
+                    {
+                    "id": "gxMfl6L_Qe6EXX72-s8h-w",
+                    "email": "sundar.info22@gmail.com"
+                    }
+                ]
+            }
+        json_input = json.dumps(input_dict) 
+        self.conn.request("PUT",request_url,json_input,headers=self.headers)
+        res = self.conn.getresponse()
+        print(res.status)
+        data = res.read()
+        print(data.decode("utf-8"))
+
 obj = ZoomAPIClient()
-obj.get_all_participant()
+#obj.update_registrant_status()
 #obj.add_new_participant()
-#obj.get_user_list()
+#obj.test_with_request_lib()
+#obj.get_all_participant()
+#obj.add_new_participant()
+obj.get_user_list()
 #obj.create_new_meeting()
